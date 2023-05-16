@@ -31,31 +31,37 @@ function BuildView() {
   function recalculatePossibleBlocks(blocks: Array<{position:THREE.Vector3, key:number}>): Array<{position:THREE.Vector3, key:number}> {
     const tmpBlocks = new Array<THREE.Vector3>()
     blocks.forEach((block) => {
-        if (tmpBlocks.includes(block.position)) {
-            tmpBlocks.splice(tmpBlocks.indexOf(block.position), 1)
+        if (tmpBlocks.some(b => b.equals(block.position))) {
+            tmpBlocks.splice(tmpBlocks.reduce((last, current, index) => current.equals(block.position) ? index : last, -1), 1)
         }
         let tmpPos = new THREE.Vector3()
-        if (!tmpBlocks.includes(tmpPos.addVectors(block.position, new THREE.Vector3(1, 0, 0)))) {
+        tmpPos.addVectors(block.position, new THREE.Vector3(1, 0, 0))
+        if (!tmpBlocks.some(b => b.equals(tmpPos))) {
             tmpBlocks.push(tmpPos)
         }
         tmpPos = new THREE.Vector3()
-        if (!tmpBlocks.includes(tmpPos.addVectors(block.position, new THREE.Vector3(0, 1, 0)))) {
+        tmpPos.addVectors(block.position, new THREE.Vector3(0, 1, 0))
+        if (!tmpBlocks.some(b => b.equals(tmpPos))) {
             tmpBlocks.push(tmpPos)
         }
         tmpPos = new THREE.Vector3()
-        if (!tmpBlocks.includes(tmpPos.addVectors(block.position, new THREE.Vector3(0, 0, 1)))) {
+        tmpPos.addVectors(block.position, new THREE.Vector3(0, 0, 1))
+        if (!tmpBlocks.some(b => b.equals(tmpPos))) {
             tmpBlocks.push(tmpPos)
         }
         tmpPos = new THREE.Vector3()
-        if (!tmpBlocks.includes(tmpPos.addVectors(block.position, new THREE.Vector3(-1, 0, 0)))) {
+        tmpPos.addVectors(block.position, new THREE.Vector3(-1, 0, 0))
+        if (!tmpBlocks.some(b => b.equals(tmpPos))) {
             tmpBlocks.push(tmpPos)
         }
         tmpPos = new THREE.Vector3()
-        if (!tmpBlocks.includes(tmpPos.addVectors(block.position, new THREE.Vector3(0, -1, 0)))) {
+        tmpPos.addVectors(block.position, new THREE.Vector3(0, -1, 0))
+        if (!tmpBlocks.some(b => b.equals(tmpPos))) {
             tmpBlocks.push(tmpPos)
         }
         tmpPos = new THREE.Vector3()
-        if (!tmpBlocks.includes(tmpPos.addVectors(block.position, new THREE.Vector3(0, 0, -1)))) {
+        tmpPos.addVectors(block.position, new THREE.Vector3(0, 0, -1))
+        if (!tmpBlocks.some(b => b.equals(tmpPos))) {
             tmpBlocks.push(tmpPos)
         }
     })
