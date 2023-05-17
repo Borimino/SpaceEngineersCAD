@@ -74,9 +74,9 @@ function BuildView() {
 
   return (
     <div className="BuildView">
-        <Canvas camera={{ fov: 75, near: 0.1, far: 1000, position: [5, 5, 5] }} onContextMenu={(e) => {e.preventDefault()}}>
+        <Canvas orthographic camera={{ zoom: 50, position: [100, 100, 100] }} onContextMenu={(e) => {e.preventDefault()}}>
             <ambientLight />
-            <pointLight position={[10, -5, -10]} />
+            <directionalLight />
             {blocks.map(block => {
                 return (
                     <Box key={block.key} position={block.position} deleteBlock={deleteBlock} placeBlock={placeBlock} actual={true}/>
