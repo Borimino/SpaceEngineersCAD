@@ -5,12 +5,12 @@ import Box from './Box'
 import CameraHandler from './CameraHandler'
 
 function BuildView(props: {cameraPosition: THREE.Vector3}) {
-  const [blocks, setBlocks] = useState<Array<{position:THREE.Vector3, key:number}>>([
-    {position: new THREE.Vector3(0, 0, 0), key: 0},
-    {position: new THREE.Vector3(1, 0, 0), key: 1},
+  const [blocks, setBlocks] = useState<Array<{position:THREE.Vector3, key:number, hovering:number, actuallyHovering:boolean}>>([
+    {position: new THREE.Vector3(0, 0, 0), key: 0, hovering: -1, actuallyHovering: false},
+    {position: new THREE.Vector3(1, 0, 0), key: 1, hovering: -1, actuallyHovering: false},
   ])
 
-  const [possibleBlocks, setPossibleBlocks] = useState<Array<{position:THREE.Vector3, key:number}>>(recalculatePossibleBlocks(blocks))
+  const [possibleBlocks, setPossibleBlocks] = useState<Array<{position:THREE.Vector3, key:number, hovering:number, actuallyHovering:boolean}>>(recalculatePossibleBlocks(blocks))
 
   function deleteBlock(position: THREE.Vector3) {
     const tmpBlocks = blocks.filter(block => block.position != position)
@@ -21,15 +21,15 @@ function BuildView(props: {cameraPosition: THREE.Vector3}) {
   function placeBlock(position: THREE.Vector3) {
     const tmpBlocks = blocks
     if (tmpBlocks.length === 0) {
-        tmpBlocks.push({position: position, key: 0})
+        tmpBlocks.push({position: position, key: 0, hovering: -1, actuallyHovering: false})
     } else {
-        tmpBlocks.push({position: position, key: blocks.map((block) => block.key).reduce((one, two) => Math.max(one, two)) + 1})
+        tmpBlocks.push({position: position, key: blocks.map((block) => block.key).reduce((one, two) => Math.max(one, two)) + 1, hovering: -1, actuallyHovering: false})
     }
     setBlocks(tmpBlocks)
     setPossibleBlocks(recalculatePossibleBlocks(tmpBlocks))
   }
 
-  function recalculatePossibleBlocks(blocks: Array<{position:THREE.Vector3, key:number}>): Array<{position:THREE.Vector3, key:number}> {
+  function recalculatePossibleBlocks(blocks: Array<{position:THREE.Vector3, key:number, hovering:number, actuallyHovering:boolean}>): Array<{position:THREE.Vector3, key:number, hovering:number, actuallyHovering:boolean}> {
     const tmpBlocks = new Array<THREE.Vector3>()
     blocks.forEach((block) => {
         if (tmpBlocks.some(b => b.equals(block.position))) {
@@ -70,7 +70,71 @@ function BuildView(props: {cameraPosition: THREE.Vector3}) {
         tmpBlocks.push(new THREE.Vector3())
     }
     let key = blocks.length
-    return tmpBlocks.map((position) => {return {position: position, key: key++}})
+    return tmpBlocks.map((position) => {return {position: position, key: key++, hovering: -1, actuallyHovering: false}})
+  }
+
+  function setHover(position: THREE.Vector3, hovering: number, actual: boolean) {
+    if (actual) {
+        setBlocks(blocks.map((block) => {
+            if (block.position.equals(position)) {
+                block.hovering = hovering;
+            }
+            return block;
+        }))
+        if (!blocks.some((block) => block.hovering > -1)) {
+            setBlocks(blocks.map((block) => {block.actuallyHovering = false; return block}))
+        } else {
+            const hoveringPosition = blocks.reduce((acc, cur) => {
+                if (acc.hovering === -1) {
+                    return cur;
+                } else if (cur.hovering === -1) {
+                    return acc;
+                } else if (cur.hovering < acc.hovering) {
+                    return cur;
+                } else {
+                    return acc;
+                }
+            }).position;
+            setBlocks(blocks.map((block) => {
+                if (block.position.equals(hoveringPosition)) {
+                    block.actuallyHovering = true;
+                } else {
+                    block.actuallyHovering = false;
+                }
+                return block;
+            }))
+        }
+    } else {
+        setPossibleBlocks(possibleBlocks.map((block) => {
+            if (block.position.equals(position)) {
+                block.hovering = hovering;
+            }
+            return block;
+        }))
+        if (!possibleBlocks.some((block) => block.hovering > -1)) {
+            setPossibleBlocks(possibleBlocks.map((block) => {block.actuallyHovering = false; return block}))
+        } else {
+            const hoveringPosition = possibleBlocks.reduce((acc, cur) => {
+                if (acc.hovering === -1) {
+                    return cur;
+                } else if (cur.hovering === -1) {
+                    return acc;
+                } else if (cur.hovering < acc.hovering) {
+                    return cur;
+                } else {
+                    return acc;
+                }
+            }).position;
+            setPossibleBlocks(possibleBlocks.map((block) => {
+                if (block.position.equals(hoveringPosition)) {
+                    block.actuallyHovering = true;
+                } else {
+                    block.actuallyHovering = false;
+                }
+                return block;
+            }))
+        }
+    }
   }
 
   const cameraPosition = props.cameraPosition.clone();
@@ -84,12 +148,12 @@ function BuildView(props: {cameraPosition: THREE.Vector3}) {
             <directionalLight position={[1, 2, 0]} />
             {blocks.map(block => {
                 return (
-                    <Box key={block.key} position={block.position} deleteBlock={deleteBlock} placeBlock={placeBlock} actual={true}/>
+                    <Box key={block.key} position={block.position} deleteBlock={deleteBlock} placeBlock={placeBlock} actual={true} setHover={setHover} hover={block.actuallyHovering}/>
                 )
             })}
             {possibleBlocks.map(block => {
                 return (
-                    <Box key={block.key} position={block.position} deleteBlock={deleteBlock} placeBlock={placeBlock} actual={false}/>
+                    <Box key={block.key} position={block.position} deleteBlock={deleteBlock} placeBlock={placeBlock} actual={false} setHover={setHover} hover={block.actuallyHovering}/>
                 )
             })}
         </Canvas>

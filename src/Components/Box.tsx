@@ -2,9 +2,8 @@ import * as THREE from 'three'
 import { useRef, useState } from 'react'
 import { Canvas, useFrame, ThreeElements, ThreeEvent } from '@react-three/fiber'
 
-function Box(props: {position: THREE.Vector3, deleteBlock: (position: THREE.Vector3) => void, placeBlock: (position: THREE.Vector3) => void, actual: boolean}) {
+function Box(props: {position: THREE.Vector3, deleteBlock: (position: THREE.Vector3) => void, placeBlock: (position: THREE.Vector3) => void, actual: boolean, setHover: (position: THREE.Vector3, hovering: number, actual: boolean) => void, hover: boolean}) {
   const mesh = useRef<THREE.Mesh>(null!)
-  const [hover, setHover] = useState(false)
   return (
     <mesh
       position={props.position}
@@ -17,26 +16,20 @@ function Box(props: {position: THREE.Vector3, deleteBlock: (position: THREE.Vect
           }
       }}
       onClick={(event: ThreeEvent<MouseEvent>) => {
-        event.stopPropagation()
         if (!props.actual) {
+            event.stopPropagation()
             props.placeBlock(props.position)
         }
       }}
       onPointerEnter={(e) => {
-        e.stopPropagation()
-        if (!props.actual) {
-            setHover(true)
-        }
+        props.setHover(props.position, e.distance, props.actual)
       }}
       onPointerLeave={(e) => {
-        e.stopPropagation()
-        if (!props.actual) {
-            setHover(false)
-        }
+        props.setHover(props.position, -1, props.actual)
       }}
       >
       <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={hover ? "purple" : "gray"} wireframe={props.actual ? false : true}/>
+      <meshStandardMaterial color={props.hover ? "purple" : "gray"} wireframe={props.actual ? false : true}/>
     </mesh>
   );
 }
