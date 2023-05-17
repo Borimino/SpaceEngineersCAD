@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/SpaceEngineersCAD/static/css/main.07f393c3.css",
-    "main.js": "/SpaceEngineersCAD/static/js/main.5b13687e.js",
-    "static/js/787.3ff0b9c6.chunk.js": "/SpaceEngineersCAD/static/js/787.3ff0b9c6.chunk.js",
+    "main.css": "/SpaceEngineersCAD/static/css/main.e9e06b4c.css",
+    "main.js": "/SpaceEngineersCAD/static/js/main.9945c50b.js",
+    "static/js/787.ad5a053e.chunk.js": "/SpaceEngineersCAD/static/js/787.ad5a053e.chunk.js",
     "index.html": "/SpaceEngineersCAD/index.html",
-    "main.07f393c3.css.map": "/SpaceEngineersCAD/static/css/main.07f393c3.css.map",
-    "main.5b13687e.js.map": "/SpaceEngineersCAD/static/js/main.5b13687e.js.map",
-    "787.3ff0b9c6.chunk.js.map": "/SpaceEngineersCAD/static/js/787.3ff0b9c6.chunk.js.map"
+    "main.e9e06b4c.css.map": "/SpaceEngineersCAD/static/css/main.e9e06b4c.css.map",
+    "main.9945c50b.js.map": "/SpaceEngineersCAD/static/js/main.9945c50b.js.map",
+    "787.ad5a053e.chunk.js.map": "/SpaceEngineersCAD/static/js/787.ad5a053e.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.07f393c3.css",
-    "static/js/main.5b13687e.js"
+    "static/css/main.e9e06b4c.css",
+    "static/js/main.9945c50b.js"
   ]
 }
