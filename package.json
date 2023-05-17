@@ -1,6 +1,6 @@
 {
-  "name": "grid-builder",
-  "version": "0.1.0",
+  "name": "Space Engineers Grid Designer",
+  "version": "0.0.1",
   "private": true,
   "dependencies": {
     "@react-three/drei": "^9.68.3",
