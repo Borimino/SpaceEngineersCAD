@@ -2,8 +2,9 @@ import * as THREE from 'three'
 import { useRef, useState } from 'react'
 import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
 import Box from './Box'
+import CameraHandler from './CameraHandler'
 
-function BuildView() {
+function BuildView(props: {cameraPosition: THREE.Vector3}) {
   const [blocks, setBlocks] = useState<Array<{position:THREE.Vector3, key:number}>>([
     {position: new THREE.Vector3(0, 0, 0), key: 0},
     {position: new THREE.Vector3(1, 0, 0), key: 1},
@@ -72,11 +73,15 @@ function BuildView() {
     return tmpBlocks.map((position) => {return {position: position, key: key++}})
   }
 
+  const cameraPosition = props.cameraPosition.clone();
+  cameraPosition.multiplyScalar(100);
+
   return (
     <div className="BuildView">
-        <Canvas orthographic camera={{ zoom: 50, position: [100, 100, 100] }} onContextMenu={(e) => {e.preventDefault()}}>
+        <Canvas orthographic camera={{ zoom: 50, position: cameraPosition }} onContextMenu={(e) => {e.preventDefault()}}>
+            <CameraHandler cameraPosition={cameraPosition} />
             <ambientLight />
-            <directionalLight />
+            <directionalLight position={[1, 2, 0]} />
             {blocks.map(block => {
                 return (
                     <Box key={block.key} position={block.position} deleteBlock={deleteBlock} placeBlock={placeBlock} actual={true}/>
