@@ -4,6 +4,19 @@ import { Canvas, useFrame, ThreeElements, ThreeEvent } from '@react-three/fiber'
 
 function Box(props: {position: THREE.Vector3, deleteBlock: (position: THREE.Vector3) => void, placeBlock: (position: THREE.Vector3) => void, actual: boolean, setHover: (position: THREE.Vector3, hovering: number, actual: boolean) => void, hover: boolean, removable: boolean}) {
   const mesh = useRef<THREE.Mesh>(null!)
+  function chooseColor(hover: boolean, removable: boolean, actual: boolean): string {
+    if (!hover) {
+        return "gray";
+    }
+    if (!actual) {
+        return "purple";
+    }
+    if (!removable) {
+        return "red";
+    }
+    return "yellow";
+  }
+
   return (
     <mesh
       position={props.position}
@@ -29,7 +42,7 @@ function Box(props: {position: THREE.Vector3, deleteBlock: (position: THREE.Vect
       }}
       >
       <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={props.hover ? (props.removable ? "purple" : "red") : "gray"} wireframe={props.actual ? false : true}/>
+      <meshStandardMaterial color={chooseColor(props.hover, props.removable, props.actual)} wireframe={props.actual ? false : true}/>
     </mesh>
   );
 }
