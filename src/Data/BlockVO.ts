@@ -5,6 +5,7 @@ class BlockVO {
     key: number;
     hovering: number = -1;
     actuallyHovering: boolean = false;
+    removable: boolean = true;
 
     public constructor(position: THREE.Vector3, key: number) {
         this.position = position;

@@ -4,6 +4,7 @@ import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
 import Box from './Box'
 import CameraHandler from './CameraHandler'
 import BlockVO from './../Data/BlockVO'
+import DeleteChecker from './../Services/DeleteChecker'
 
 function BuildView(props: {cameraPosition: THREE.Vector3}) {
   const [blocks, setBlocks] = useState<Array<BlockVO>>([
@@ -14,9 +15,11 @@ function BuildView(props: {cameraPosition: THREE.Vector3}) {
   const [possibleBlocks, setPossibleBlocks] = useState<Array<BlockVO>>(recalculatePossibleBlocks(blocks))
 
   function deleteBlock(position: THREE.Vector3) {
-    const tmpBlocks = blocks.filter(block => block.position != position)
-    setBlocks(tmpBlocks)
-    setPossibleBlocks(recalculatePossibleBlocks(tmpBlocks))
+    if (DeleteChecker.checkIfBlockIsDeletable(position, blocks)) {
+        const tmpBlocks = blocks.filter(block => block.position != position)
+        setBlocks(tmpBlocks)
+        setPossibleBlocks(recalculatePossibleBlocks(tmpBlocks))
+    }
   }
 
   function placeBlock(position: THREE.Vector3) {
@@ -136,6 +139,16 @@ function BuildView(props: {cameraPosition: THREE.Vector3}) {
             }))
         }
     }
+    setRemovable(position, actual);
+  }
+
+  function setRemovable(position: THREE.Vector3, actual: boolean) {
+    if (actual) {
+        setBlocks(blocks.map((block) => {
+            block.removable = DeleteChecker.checkIfBlockIsDeletable(block.position, blocks);
+            return block;
+        }))
+    }
   }
 
   const cameraPosition = props.cameraPosition.clone();
@@ -149,12 +162,12 @@ function BuildView(props: {cameraPosition: THREE.Vector3}) {
             <directionalLight position={[1, 2, 0]} />
             {blocks.map(block => {
                 return (
-                    <Box key={block.key} position={block.position} deleteBlock={deleteBlock} placeBlock={placeBlock} actual={true} setHover={setHover} hover={block.actuallyHovering}/>
+                    <Box key={block.key} position={block.position} deleteBlock={deleteBlock} placeBlock={placeBlock} actual={true} setHover={setHover} hover={block.actuallyHovering} removable={block.removable}/>
                 )
             })}
             {possibleBlocks.map(block => {
                 return (
-                    <Box key={block.key} position={block.position} deleteBlock={deleteBlock} placeBlock={placeBlock} actual={false} setHover={setHover} hover={block.actuallyHovering}/>
+                    <Box key={block.key} position={block.position} deleteBlock={deleteBlock} placeBlock={placeBlock} actual={false} setHover={setHover} hover={block.actuallyHovering} removable={block.removable}/>
                 )
             })}
         </Canvas>
