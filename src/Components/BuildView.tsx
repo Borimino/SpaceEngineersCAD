@@ -3,14 +3,15 @@ import { useRef, useState } from 'react'
 import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
 import Box from './Box'
 import CameraHandler from './CameraHandler'
+import BlockVO from './../Data/BlockVO'
 
 function BuildView(props: {cameraPosition: THREE.Vector3}) {
-  const [blocks, setBlocks] = useState<Array<{position:THREE.Vector3, key:number, hovering:number, actuallyHovering:boolean}>>([
-    {position: new THREE.Vector3(0, 0, 0), key: 0, hovering: -1, actuallyHovering: false},
-    {position: new THREE.Vector3(1, 0, 0), key: 1, hovering: -1, actuallyHovering: false},
+  const [blocks, setBlocks] = useState<Array<BlockVO>>([
+    new BlockVO(new THREE.Vector3(0, 0, 0), 0),
+    new BlockVO(new THREE.Vector3(1, 0, 0), 1)
   ])
 
-  const [possibleBlocks, setPossibleBlocks] = useState<Array<{position:THREE.Vector3, key:number, hovering:number, actuallyHovering:boolean}>>(recalculatePossibleBlocks(blocks))
+  const [possibleBlocks, setPossibleBlocks] = useState<Array<BlockVO>>(recalculatePossibleBlocks(blocks))
 
   function deleteBlock(position: THREE.Vector3) {
     const tmpBlocks = blocks.filter(block => block.position != position)
@@ -21,15 +22,15 @@ function BuildView(props: {cameraPosition: THREE.Vector3}) {
   function placeBlock(position: THREE.Vector3) {
     const tmpBlocks = blocks
     if (tmpBlocks.length === 0) {
-        tmpBlocks.push({position: position, key: 0, hovering: -1, actuallyHovering: false})
+        tmpBlocks.push(new BlockVO(position, 0));
     } else {
-        tmpBlocks.push({position: position, key: blocks.map((block) => block.key).reduce((one, two) => Math.max(one, two)) + 1, hovering: -1, actuallyHovering: false})
+        tmpBlocks.push(new BlockVO(position, blocks.map((block) => block.key).reduce((one, two) => Math.max(one, two)) + 1));
     }
     setBlocks(tmpBlocks)
     setPossibleBlocks(recalculatePossibleBlocks(tmpBlocks))
   }
 
-  function recalculatePossibleBlocks(blocks: Array<{position:THREE.Vector3, key:number, hovering:number, actuallyHovering:boolean}>): Array<{position:THREE.Vector3, key:number, hovering:number, actuallyHovering:boolean}> {
+  function recalculatePossibleBlocks(blocks: Array<BlockVO>): Array<BlockVO> {
     const tmpBlocks = new Array<THREE.Vector3>()
     blocks.forEach((block) => {
         if (tmpBlocks.some(b => b.equals(block.position))) {
@@ -70,7 +71,7 @@ function BuildView(props: {cameraPosition: THREE.Vector3}) {
         tmpBlocks.push(new THREE.Vector3())
     }
     let key = blocks.length
-    return tmpBlocks.map((position) => {return {position: position, key: key++, hovering: -1, actuallyHovering: false}})
+    return tmpBlocks.map((position) => {return new BlockVO(position, key++)});
   }
 
   function setHover(position: THREE.Vector3, hovering: number, actual: boolean) {
