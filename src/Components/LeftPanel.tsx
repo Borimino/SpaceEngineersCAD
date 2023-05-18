@@ -22,7 +22,7 @@ function LeftPanel(props: {cameraPosition: THREE.Vector3, onClick: (position: TH
         Left panel
       </p>
       <div className="SaveLoadMenu">
-        <TextField id="fileName" label="Filename.zip"/>
+        <TextField id="gridName" label="Grid name"/>
         <Button variant="contained">Load</Button>
         <Button variant="contained">Save</Button>
       </div>
