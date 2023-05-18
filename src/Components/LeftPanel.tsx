@@ -6,6 +6,8 @@ import OrientationCube from './OrientationCube'
 import CameraHandler from './CameraHandler'
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
+import SearchIcon from '@mui/icons-material/Search';
 
 function LeftPanel(props: {cameraPosition: THREE.Vector3, onClick: (position: THREE.Vector3) => void}) {
   return (
@@ -18,9 +20,20 @@ function LeftPanel(props: {cameraPosition: THREE.Vector3, onClick: (position: TH
           <OrientationCube onClick={props.onClick} />
         </Canvas>
       </div>
-      <p className="LeftPannelMid">
-        Left panel
-      </p>
+      <div className="LeftPannelMid">
+        <TextField id="searchbar" label="Search"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+        <p>
+          Future list of blocks
+        </p>
+      </div>
       <div className="SaveLoadMenu">
         <TextField id="gridName" label="Grid name"/>
         <Button variant="contained">Load</Button>
