@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/SpaceEngineersCAD/static/css/main.e9e06b4c.css",
-    "main.js": "/SpaceEngineersCAD/static/js/main.109d5b72.js",
+    "main.css": "/SpaceEngineersCAD/static/css/main.baa3b875.css",
+    "main.js": "/SpaceEngineersCAD/static/js/main.2523acc5.js",
     "static/js/787.ad5a053e.chunk.js": "/SpaceEngineersCAD/static/js/787.ad5a053e.chunk.js",
     "index.html": "/SpaceEngineersCAD/index.html",
-    "main.e9e06b4c.css.map": "/SpaceEngineersCAD/static/css/main.e9e06b4c.css.map",
-    "main.109d5b72.js.map": "/SpaceEngineersCAD/static/js/main.109d5b72.js.map",
+    "main.baa3b875.css.map": "/SpaceEngineersCAD/static/css/main.baa3b875.css.map",
+    "main.2523acc5.js.map": "/SpaceEngineersCAD/static/js/main.2523acc5.js.map",
     "787.ad5a053e.chunk.js.map": "/SpaceEngineersCAD/static/js/787.ad5a053e.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.e9e06b4c.css",
-    "static/js/main.109d5b72.js"
+    "static/css/main.baa3b875.css",
+    "static/js/main.2523acc5.js"
   ]
 }
