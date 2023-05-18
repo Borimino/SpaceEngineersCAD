@@ -34,3 +34,11 @@
   width: 100%;
   aspect-ratio: 1;
 }
+
+.LeftPannelMid {
+  height: 100%;
+}
+
+.SaveLoadMenu {
+  margin: 20px;
+}
