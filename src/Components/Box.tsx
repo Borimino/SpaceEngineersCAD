@@ -1,27 +1,29 @@
 import * as THREE from 'three'
 import { useRef, useState } from 'react'
 import { Canvas, useFrame, ThreeElements, ThreeEvent } from '@react-three/fiber'
+import LargeBlockArmorBlock from './../Resources/LargeBlockArmorBlock'
 
 function Box(props: {position: THREE.Vector3, deleteBlock: (position: THREE.Vector3) => void, placeBlock: (position: THREE.Vector3) => void, actual: boolean, setHover: (position: THREE.Vector3, hovering: number, actual: boolean) => void, hover: boolean, removable: boolean}) {
-  const mesh = useRef<THREE.Mesh>(null!)
-  function chooseColor(hover: boolean, removable: boolean, actual: boolean): string {
+  function chooseColor(hover: boolean, removable: boolean, actual: boolean): THREE.Color {
     if (!hover) {
-        return "gray";
+      return new THREE.Color("white");
     }
     if (!actual) {
-        return "purple";
+      return new THREE.Color("purple");
     }
     if (!removable) {
-        return "red";
+      return new THREE.Color("red");
     }
-    return "yellow";
+    return new THREE.Color("yellow");
   }
 
   return (
-    <mesh
+    <LargeBlockArmorBlock
+      color={chooseColor(props.hover, props.removable, props.actual)}
+      opacity={props.actual ? 1 : (props.hover ? 0.5 : 0.1)}
+      transparent={props.actual ? false : true}
       position={props.position}
-      ref={mesh}
-      scale={1}
+      scale={1/(1.25*2)}
       onContextMenu={(event: ThreeEvent<MouseEvent>) => {
           if (props.actual) {
               event.stopPropagation()
@@ -34,16 +36,16 @@ function Box(props: {position: THREE.Vector3, deleteBlock: (position: THREE.Vect
             props.placeBlock(props.position)
         }
       }}
-      onPointerEnter={(e) => {
+      onPointerEnter={(e: ThreeEvent<MouseEvent>) => {
         props.setHover(props.position, e.distance, props.actual)
       }}
-      onPointerLeave={(e) => {
+      onPointerLeave={(e: ThreeEvent<MouseEvent>) => {
         props.setHover(props.position, -1, props.actual)
       }}
       >
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={chooseColor(props.hover, props.removable, props.actual)} wireframe={props.actual ? false : true}/>
-    </mesh>
+//      <boxGeometry args={[1, 1, 1]} />
+//      <meshStandardMaterial color={chooseColor(props.hover, props.removable, props.actual)} wireframe={props.actual ? false : true}/>
+    </LargeBlockArmorBlock>
   );
 }
 

@@ -12,8 +12,8 @@ function App() {
 
   // Block handling start
   const [blocks, setBlocks] = useState<Array<BlockVO>>([
-    new BlockVO(new THREE.Vector3(0, 0, 0), 0),
-    new BlockVO(new THREE.Vector3(1, 0, 0), 1)
+//    new BlockVO(new THREE.Vector3(0, 0, 0), 0),
+//    new BlockVO(new THREE.Vector3(1, 0, 0), 1)
   ])
 
   const [possibleBlocks, setPossibleBlocks] = useState<Array<BlockVO>>(recalculatePossibleBlocks(blocks))
