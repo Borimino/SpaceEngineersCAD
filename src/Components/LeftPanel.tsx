@@ -43,15 +43,7 @@ function LeftPanel(props: {cameraPosition: THREE.Vector3, onClick: (position: TH
 
   return (
     <div className="LeftPanel">
-      <div className="OrientationCube">
-        <Canvas orthographic camera={{ zoom: 50, position: props.cameraPosition }} onContextMenu={(e) => e.preventDefault()}>
-          <CameraHandler cameraPosition={props.cameraPosition} />
-          <ambientLight />
-          <directionalLight position={[1, 2, 0]} />
-          <OrientationCube onClick={props.onClick} />
-        </Canvas>
-      </div>
-      <div className="LeftPannelMid">
+      <div className="SearchArea">
         <TextField id="searchbar" label="Search"
           InputProps={{
             startAdornment: (

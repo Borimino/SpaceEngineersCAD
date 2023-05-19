@@ -4,6 +4,7 @@ import { useRef, useState } from 'react'
 import './App.css';
 import BuildView from './Components/BuildView'
 import LeftPanel from './Components/LeftPanel'
+import RightPanel from './Components/RightPanel'
 import BlockVO from './Data/BlockVO'
 import DeleteChecker from './Services/DeleteChecker'
 
@@ -161,10 +162,50 @@ function App() {
   }
   // Block handling end
 
+  // Slice limit handling start
+  const [sliceLimitsMax, setSliceLimitsMax] = useState<THREE.Vector3>(new THREE.Vector3(0, 0, 0));
+  const [sliceLimitsMin, setSliceLimitsMin] = useState<THREE.Vector3>(new THREE.Vector3(0, 0, 0));
+  function applySliceLimits(min: THREE.Vector3, max: THREE.Vector3) {
+    setSliceLimitsMin(min);
+    setSliceLimitsMax(max);
+    setPossibleBlocks(recalculatePossibleBlocks(blocks)); //Force a re-render
+  }
+
+  const [limitDirections, setLimitDirections] = useState<THREE.Vector3>(new THREE.Vector3(0, 0, 0));
+  function applyDirectionLimits(limitDirections: THREE.Vector3) {
+    console.log(limitDirections);
+    setLimitDirections(limitDirections);
+    setPossibleBlocks(recalculatePossibleBlocks(blocks)); //Force a re-render
+  }
+  // Slice limit handling end
+
   return (
     <div className="App">
-        <LeftPanel cameraPosition={cameraPosition} onClick={(position: THREE.Vector3) => setCameraPosition(position)} blocks={blocks} resetBlocks={resetBlocks} />
-        <BuildView cameraPosition={cameraPosition} blocks={blocks} possibleBlocks={possibleBlocks} deleteBlock={deleteBlock} placeBlock={placeBlock} setHover={setHover} />
+        <LeftPanel
+          cameraPosition={cameraPosition}
+          onClick={(position: THREE.Vector3) => setCameraPosition(position)}
+          blocks={blocks}
+          resetBlocks={resetBlocks} />
+        <BuildView
+          cameraPosition={cameraPosition}
+          blocks={blocks}
+          possibleBlocks={possibleBlocks}
+          deleteBlock={deleteBlock}
+          placeBlock={placeBlock}
+          setHover={setHover}
+          sliceLimitsMin={sliceLimitsMin}
+          sliceLimitsMax={sliceLimitsMax}
+          limitDirections={limitDirections} />
+        <RightPanel
+          cameraPosition={cameraPosition}
+          onClick={(position: THREE.Vector3) => setCameraPosition(position)}
+          blocks={blocks}
+          possibleBlocks={possibleBlocks}
+          applySliceLimits={applySliceLimits}
+          sliceLimitsMin={sliceLimitsMin}
+          sliceLimitsMax={sliceLimitsMax}
+          limitDirections={limitDirections}
+          applyDirectionLimits={applyDirectionLimits} />
     </div>
   );
 }

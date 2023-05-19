@@ -1,18 +1,18 @@
 .App {
   text-align: center;
+  font-size: calc(10px + 2vmin);
 }
 
 .BuildView {
   background-color: #282c34;
   height: calc(100vh - 2px);
-  width: calc(90vw - 2px);
+  width: calc(80vw - 2px);
   display: flex;
   float: left;
   border: 1px solid;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
   color: white;
 }
 
@@ -26,17 +26,39 @@
   flex-direction: column;
   align-items: center;
   justify-content: left;
-  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.RightPanel {
+  background-color: #282c34;
+  height: calc(100vh - 2px);
+  width: calc(10vw - 2px);
+  display: flex;
+  float: left;
+  border: 1px solid;
+  flex-direction: column;
+  align-items: center;
+  justify-content: left;
   color: white;
 }
 
 .OrientationCube {
   width: 100%;
   aspect-ratio: 1;
+  margin: 20px;
 }
 
-.LeftPannelMid {
+.SearchArea {
   height: 100%;
+  margin: 20px;
+}
+
+.RightPanelMid {
+  height: 100%;
+  margin: 20px;
+}
+
+.SliceManager {
   margin: 20px;
 }
 
