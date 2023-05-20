@@ -149,10 +149,12 @@ function App() {
 
   function setRemovable(position: THREE.Vector3, actual: boolean) {
     if (actual) {
-        setBlocks(blocks.map((block) => {
-            block.removable = DeleteChecker.checkIfBlockIsDeletable(block.position, blocks);
-            return block;
-        }))
+      setBlocks(blocks.map((block) => {
+        if (block.position.equals(position)) {
+          block.removable = DeleteChecker.checkIfBlockIsDeletable(block.position, blocks);
+        }
+        return block;
+      }))
     }
   }
 
