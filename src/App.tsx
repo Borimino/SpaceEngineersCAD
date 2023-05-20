@@ -17,14 +17,17 @@ function App() {
   const [rotation, setRotation] = useState<THREE.Object3D>(new THREE.Object3D());
   function rotateX(up: boolean) {
     setRotation(rotation.rotateX(Math.PI*(up ? 0.5 : -0.5)));
+    console.log(rotation.rotation);
     setPossibleBlocks(recalculatePossibleBlocks(blocks));
   }
   function rotateY(up: boolean) {
     setRotation(rotation.rotateY(Math.PI*(up ? 0.5 : -0.5)));
+    console.log(rotation.rotation);
     setPossibleBlocks(recalculatePossibleBlocks(blocks));
   }
   function rotateZ(up: boolean) {
     setRotation(rotation.rotateZ(Math.PI*(up ? 0.5 : -0.5)));
+    console.log(rotation.rotation);
     setPossibleBlocks(recalculatePossibleBlocks(blocks));
   }
   function resetPossibleBlocks() {
