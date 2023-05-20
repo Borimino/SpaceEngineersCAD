@@ -2,14 +2,40 @@ import React from 'react';
 import * as THREE from 'three'
 import { useRef, useState } from 'react'
 import './App.css';
-import BuildView from './Components/BuildView'
-import LeftPanel from './Components/LeftPanel'
-import RightPanel from './Components/RightPanel'
+import BuildView from './Components/Center/BuildView'
+import LeftPanel from './Components/Left/LeftPanel'
+import RightPanel from './Components/Right/RightPanel'
 import BlockVO from './Data/BlockVO'
+import BlockTypeVO from './Data/BlockTypeVO'
 import DeleteChecker from './Services/DeleteChecker'
+import LargeBlockArmorBlock from './Resources/LargeBlockArmorBlock'
+import LargeBlockArmorSlope from './Resources/LargeBlockArmorSlope'
 
 function App() {
   const [cameraPosition, setCameraPosition] = useState<THREE.Vector3>(new THREE.Vector3(1, 1, 1))
+
+  // Block type handling start
+  const [blockTypes, setBlockTypes] = useState<Array<BlockTypeVO>>([new BlockTypeVO(0, 'Light Armor Block', 'LargeBlockArmorBlock', LargeBlockArmorBlock, true), new BlockTypeVO(1, 'Light Armor Slope', 'LargeBlockArmorSlope', LargeBlockArmorSlope)]);
+  function selectBlockType(key: number) {
+    setBlockTypes(blockTypes.map((blockType) => {
+      if (blockType.key === key) {
+        blockType.active = true;
+      } else {
+        blockType.active = false;
+      }
+      return blockType;
+    }))
+    setPossibleBlocks(recalculatePossibleBlocks(blocks));
+  }
+  function getActiveBlockType() {
+    return blockTypes.reduce((acc, cur) => {
+      if (acc.active) {
+        return acc;
+      }
+      return cur;
+    })
+  }
+  // Block type handling end
 
   // Block handling start
   const [blocks, setBlocks] = useState<Array<BlockVO>>([
@@ -30,9 +56,9 @@ function App() {
   function placeBlock(position: THREE.Vector3) {
     const tmpBlocks = blocks
     if (tmpBlocks.length === 0) {
-        tmpBlocks.push(new BlockVO(position, 0));
+        tmpBlocks.push(new BlockVO(position, 0, getActiveBlockType()));
     } else {
-        tmpBlocks.push(new BlockVO(position, blocks.map((block) => block.key).reduce((one, two) => Math.max(one, two)) + 1));
+        tmpBlocks.push(new BlockVO(position, blocks.map((block) => block.key).reduce((one, two) => Math.max(one, two)) + 1, getActiveBlockType()));
     }
     setBlocks(tmpBlocks)
     setPossibleBlocks(recalculatePossibleBlocks(tmpBlocks))
@@ -79,7 +105,7 @@ function App() {
         tmpBlocks.push(new THREE.Vector3())
     }
     let key = blocks.length
-    return tmpBlocks.map((position) => {return new BlockVO(position, key++)});
+    return tmpBlocks.map((position) => {return new BlockVO(position, key++, getActiveBlockType())});
   }
 
   function setHover(position: THREE.Vector3, hovering: number, actual: boolean) {
@@ -187,7 +213,9 @@ function App() {
           cameraPosition={cameraPosition}
           onClick={(position: THREE.Vector3) => setCameraPosition(position)}
           blocks={blocks}
-          resetBlocks={resetBlocks} />
+          resetBlocks={resetBlocks}
+          blockTypes={blockTypes}
+          selectBlockType={selectBlockType} />
         <BuildView
           cameraPosition={cameraPosition}
           blocks={blocks}

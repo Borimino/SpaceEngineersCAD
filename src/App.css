@@ -65,3 +65,13 @@
 .SaveLoadMenu {
   margin: 20px;
 }
+
+.SearchResult {
+  width: 50px;
+  aspect-ratio: 1;
+  margin: 10px;
+}
+
+.SelectedSearchResult {
+  background-color: yellow;
+}

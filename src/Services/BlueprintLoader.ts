@@ -1,5 +1,7 @@
 import * as THREE from 'three'
 import BlockVO from './../Data/BlockVO'
+import BlockTypeVO from './../Data/BlockTypeVO'
+import LargeBlockArmorBlock from './../Resources/LargeBlockArmorBlock'
 
 class BlueprintLoader {
   public static loadBlueprint(resetBlocks: (blocks: Array<BlockVO>) => void, xml: string) {
@@ -23,7 +25,7 @@ class BlueprintLoader {
         y = Number(min.getAttribute("y")!);
         z = Number(min.getAttribute("z")!);
       }
-      blocks.push(new BlockVO(new THREE.Vector3(x, y, z), index));
+      blocks.push(new BlockVO(new THREE.Vector3(x, y, z), index, new BlockTypeVO(0, 'Light Armor Block', 'LargeBlockArmorBlock', LargeBlockArmorBlock, true)));
     })
     resetBlocks(blocks);
   }
