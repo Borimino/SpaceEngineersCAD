@@ -7,6 +7,7 @@ interface ModelProps {
   position: THREE.Vector3,
   scale: number,
   transparent: boolean,
+  rotation: THREE.Euler,
   onClick: (event: ThreeEvent<MouseEvent>) => void
   onContextMenu: (event: ThreeEvent<MouseEvent>) => void
   onPointerLeave: (event: ThreeEvent<MouseEvent>) => void

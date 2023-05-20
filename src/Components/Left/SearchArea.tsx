@@ -43,6 +43,7 @@ function SearchArea(props: {
                 position={new THREE.Vector3(0, 0, 0)}
                 scale={1/(1.25*2)}
                 transparent={false}
+                rotation={new THREE.Euler()}
                 onClick={(e) => props.selectBlockType(blockType.key)}
                 onContextMenu={(e) => {}}
                 onPointerLeave={(e) => {}}

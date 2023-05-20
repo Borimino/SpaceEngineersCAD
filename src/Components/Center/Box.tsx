@@ -10,7 +10,8 @@ function Box(props: {
     deleteBlock: (position: THREE.Vector3) => void,
     placeBlock: (position: THREE.Vector3) => void,
     actual: boolean,
-    setHover: (position: THREE.Vector3, hovering: number, actual: boolean) => void }) {
+    setHover: (position: THREE.Vector3, hovering: number, actual: boolean) => void
+     }) {
   function chooseColor(hover: boolean, removable: boolean, actual: boolean): THREE.Color {
     if (!hover) {
       return new THREE.Color("white");
@@ -32,6 +33,7 @@ function Box(props: {
       transparent={props.actual ? false : true}
       position={props.block.position}
       scale={1/(1.25*2)}
+      rotation={props.block.rotation}
       onContextMenu={(event: ThreeEvent<MouseEvent>) => {
           if (props.actual) {
               event.stopPropagation()

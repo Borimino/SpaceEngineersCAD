@@ -14,6 +14,25 @@ import LargeBlockArmorSlope from './Resources/LargeBlockArmorSlope'
 function App() {
   const [cameraPosition, setCameraPosition] = useState<THREE.Vector3>(new THREE.Vector3(1, 1, 1))
 
+  // Rotation handling start
+  const [rotation, setRotation] = useState<THREE.Object3D>(new THREE.Object3D());
+  function rotateX(up: boolean) {
+    setRotation(rotation.rotateX(Math.PI*(up ? 0.5 : -0.5)));
+    setPossibleBlocks(recalculatePossibleBlocks(blocks));
+  }
+  function rotateY(up: boolean) {
+    setRotation(rotation.rotateY(Math.PI*(up ? 0.5 : -0.5)));
+    setPossibleBlocks(recalculatePossibleBlocks(blocks));
+  }
+  function rotateZ(up: boolean) {
+    setRotation(rotation.rotateZ(Math.PI*(up ? 0.5 : -0.5)));
+    setPossibleBlocks(recalculatePossibleBlocks(blocks));
+  }
+  function resetPossibleBlocks() {
+    setPossibleBlocks(new Array<BlockVO>());
+  }
+  // Rotation handling end
+
   // Block type handling start
   const [blockTypes, setBlockTypes] = useState<Array<BlockTypeVO>>([new BlockTypeVO(0, 'Light Armor Block', 'LargeBlockArmorBlock', LargeBlockArmorBlock, true), new BlockTypeVO(1, 'Light Armor Slope', 'LargeBlockArmorSlope', LargeBlockArmorSlope)]);
   function selectBlockType(key: number) {
@@ -38,10 +57,7 @@ function App() {
   // Block type handling end
 
   // Block handling start
-  const [blocks, setBlocks] = useState<Array<BlockVO>>([
-//    new BlockVO(new THREE.Vector3(0, 0, 0), 0),
-//    new BlockVO(new THREE.Vector3(1, 0, 0), 1)
-  ])
+  const [blocks, setBlocks] = useState<Array<BlockVO>>([])
 
   const [possibleBlocks, setPossibleBlocks] = useState<Array<BlockVO>>(recalculatePossibleBlocks(blocks))
 
@@ -56,9 +72,9 @@ function App() {
   function placeBlock(position: THREE.Vector3) {
     const tmpBlocks = blocks
     if (tmpBlocks.length === 0) {
-        tmpBlocks.push(new BlockVO(position, 0, getActiveBlockType()));
+        tmpBlocks.push(new BlockVO(position, 0, getActiveBlockType(), rotation.rotation));
     } else {
-        tmpBlocks.push(new BlockVO(position, blocks.map((block) => block.key).reduce((one, two) => Math.max(one, two)) + 1, getActiveBlockType()));
+        tmpBlocks.push(new BlockVO(position, blocks.map((block) => block.key).reduce((one, two) => Math.max(one, two)) + 1, getActiveBlockType(), rotation.rotation));
     }
     setBlocks(tmpBlocks)
     setPossibleBlocks(recalculatePossibleBlocks(tmpBlocks))
@@ -105,7 +121,7 @@ function App() {
         tmpBlocks.push(new THREE.Vector3())
     }
     let key = blocks.length
-    return tmpBlocks.map((position) => {return new BlockVO(position, key++, getActiveBlockType())});
+    return tmpBlocks.map((position) => {return new BlockVO(position, key++, getActiveBlockType(), rotation.rotation)});
   }
 
   function setHover(position: THREE.Vector3, hovering: number, actual: boolean) {
@@ -225,7 +241,12 @@ function App() {
           setHover={setHover}
           sliceLimitsMin={sliceLimitsMin}
           sliceLimitsMax={sliceLimitsMax}
-          limitDirections={limitDirections} />
+          limitDirections={limitDirections}
+          rotateX={rotateX}
+          rotateY={rotateY}
+          rotateZ={rotateZ}
+          resetPossibleBlocks={resetPossibleBlocks}
+          />
         <RightPanel
           cameraPosition={cameraPosition}
           onClick={(position: THREE.Vector3) => setCameraPosition(position)}

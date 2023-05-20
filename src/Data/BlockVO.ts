@@ -8,11 +8,13 @@ class BlockVO {
     actuallyHovering: boolean = false;
     removable: boolean = true;
     blockType: BlockTypeVO;
+    rotation: THREE.Euler = new THREE.Euler();
 
-    public constructor(position: THREE.Vector3, key: number, blockType: BlockTypeVO) {
+    public constructor(position: THREE.Vector3, key: number, blockType: BlockTypeVO, rotation: THREE.Euler = new THREE.Euler()) {
         this.position = position;
         this.key = key;
         this.blockType = blockType;
+        this.rotation = rotation;
     }
 }
 
