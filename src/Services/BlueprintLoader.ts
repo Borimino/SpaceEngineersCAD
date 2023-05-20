@@ -25,7 +25,7 @@ class BlueprintLoader {
         y = Number(min.getAttribute("y")!);
         z = Number(min.getAttribute("z")!);
       }
-      blocks.push(new BlockVO(new THREE.Vector3(x, y, z), index, new BlockTypeVO(0, 'Light Armor Block', 'LargeBlockArmorBlock', LargeBlockArmorBlock, true)));
+      blocks.push(new BlockVO(new THREE.Vector3(x, y, z), index, BlockTypeVO.allBlockTypes[0]));
     })
     resetBlocks(blocks);
   }

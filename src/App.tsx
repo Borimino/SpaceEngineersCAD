@@ -1,5 +1,6 @@
 import React from 'react';
 import * as THREE from 'three'
+import { Vector3, Euler } from 'three'
 import { useRef, useState } from 'react'
 import './App.css';
 import BuildView from './Components/Center/BuildView'
@@ -8,8 +9,6 @@ import RightPanel from './Components/Right/RightPanel'
 import BlockVO from './Data/BlockVO'
 import BlockTypeVO from './Data/BlockTypeVO'
 import DeleteChecker from './Services/DeleteChecker'
-import LargeBlockArmorBlock from './Resources/LargeBlockArmorBlock'
-import LargeBlockArmorSlope from './Resources/LargeBlockArmorSlope'
 
 function App() {
   const [cameraPosition, setCameraPosition] = useState<THREE.Vector3>(new THREE.Vector3(1, 1, 1))
@@ -34,7 +33,7 @@ function App() {
   // Rotation handling end
 
   // Block type handling start
-  const [blockTypes, setBlockTypes] = useState<Array<BlockTypeVO>>([new BlockTypeVO(0, 'Light Armor Block', 'LargeBlockArmorBlock', LargeBlockArmorBlock, true), new BlockTypeVO(1, 'Light Armor Slope', 'LargeBlockArmorSlope', LargeBlockArmorSlope)]);
+  const [blockTypes, setBlockTypes] = useState<Array<BlockTypeVO>>(BlockTypeVO.allBlockTypes);
   function selectBlockType(key: number) {
     setBlockTypes(blockTypes.map((blockType) => {
       if (blockType.key === key) {
@@ -62,7 +61,7 @@ function App() {
   const [possibleBlocks, setPossibleBlocks] = useState<Array<BlockVO>>(recalculatePossibleBlocks(blocks))
 
   function deleteBlock(position: THREE.Vector3) {
-    if (DeleteChecker.checkIfBlockIsDeletable(position, blocks)) {
+    if (DeleteChecker.checkIfBlockIsDeletable(blocks.filter(block => block.position.equals(position))[0], blocks)) {
         const tmpBlocks = blocks.filter(block => block.position != position)
         setBlocks(tmpBlocks)
         setPossibleBlocks(recalculatePossibleBlocks(tmpBlocks))
@@ -72,56 +71,78 @@ function App() {
   function placeBlock(position: THREE.Vector3) {
     const tmpBlocks = blocks
     if (tmpBlocks.length === 0) {
-        tmpBlocks.push(new BlockVO(position, 0, getActiveBlockType(), rotation.rotation));
+        tmpBlocks.push(new BlockVO(position, 0, getActiveBlockType(), rotation.rotation.clone()));
     } else {
-        tmpBlocks.push(new BlockVO(position, blocks.map((block) => block.key).reduce((one, two) => Math.max(one, two)) + 1, getActiveBlockType(), rotation.rotation));
+        tmpBlocks.push(new BlockVO(position, blocks.map((block) => block.key).reduce((one, two) => Math.max(one, two)) + 1, getActiveBlockType(), rotation.rotation.clone()));
     }
     setBlocks(tmpBlocks)
     setPossibleBlocks(recalculatePossibleBlocks(tmpBlocks))
   }
 
   function recalculatePossibleBlocks(blocks: Array<BlockVO>): Array<BlockVO> {
-    const tmpBlocks = new Array<THREE.Vector3>()
+    const tmpBlocks = new Array<BlockVO>()
     blocks.forEach((block) => {
-        if (tmpBlocks.some(b => b.equals(block.position))) {
-            tmpBlocks.splice(tmpBlocks.reduce((last, current, index) => current.equals(block.position) ? index : last, -1), 1)
+      if (tmpBlocks.some(b => b.position.equals(block.position))) {
+          tmpBlocks.splice(tmpBlocks.reduce((last, current, index) => current.position.equals(block.position) ? index : last, -1), 1)
+      }
+      let tmpPos = new Vector3()
+      let tmpBlock = new BlockVO(tmpPos, 0, getActiveBlockType(), rotation.rotation);
+      tmpPos.addVectors(block.position, new Vector3(1, 0, 0))
+      if (!tmpBlocks.some(b => b.position.equals(tmpPos))) {
+        if (block.connectsTo(tmpBlock)) {
+          tmpBlocks.push(tmpBlock)
         }
-        let tmpPos = new THREE.Vector3()
-        tmpPos.addVectors(block.position, new THREE.Vector3(1, 0, 0))
-        if (!tmpBlocks.some(b => b.equals(tmpPos))) {
-            tmpBlocks.push(tmpPos)
+      }
+      tmpPos = new Vector3()
+      tmpPos.addVectors(block.position, new Vector3(0, 1, 0))
+      tmpBlock = new BlockVO(tmpPos, 0, getActiveBlockType(), rotation.rotation);
+      if (!tmpBlocks.some(b => b.position.equals(tmpPos))) {
+        if (block.connectsTo(tmpBlock)) {
+          tmpBlocks.push(tmpBlock)
         }
-        tmpPos = new THREE.Vector3()
-        tmpPos.addVectors(block.position, new THREE.Vector3(0, 1, 0))
-        if (!tmpBlocks.some(b => b.equals(tmpPos))) {
-            tmpBlocks.push(tmpPos)
+      }
+      tmpPos = new Vector3()
+      tmpPos.addVectors(block.position, new Vector3(0, 0, 1))
+      tmpBlock = new BlockVO(tmpPos, 0, getActiveBlockType(), rotation.rotation);
+      if (!tmpBlocks.some(b => b.position.equals(tmpPos))) {
+        if (block.connectsTo(tmpBlock)) {
+          tmpBlocks.push(tmpBlock)
         }
-        tmpPos = new THREE.Vector3()
-        tmpPos.addVectors(block.position, new THREE.Vector3(0, 0, 1))
-        if (!tmpBlocks.some(b => b.equals(tmpPos))) {
-            tmpBlocks.push(tmpPos)
+      }
+      tmpPos = new Vector3()
+      tmpPos.addVectors(block.position, new Vector3(-1, 0, 0))
+      tmpBlock = new BlockVO(tmpPos, 0, getActiveBlockType(), rotation.rotation);
+      if (!tmpBlocks.some(b => b.position.equals(tmpPos))) {
+        if (block.connectsTo(tmpBlock)) {
+          tmpBlocks.push(tmpBlock)
         }
-        tmpPos = new THREE.Vector3()
-        tmpPos.addVectors(block.position, new THREE.Vector3(-1, 0, 0))
-        if (!tmpBlocks.some(b => b.equals(tmpPos))) {
-            tmpBlocks.push(tmpPos)
+      }
+      tmpPos = new Vector3()
+      tmpPos.addVectors(block.position, new Vector3(0, -1, 0))
+      tmpBlock = new BlockVO(tmpPos, 0, getActiveBlockType(), rotation.rotation);
+      if (!tmpBlocks.some(b => b.position.equals(tmpPos))) {
+        if (block.connectsTo(tmpBlock)) {
+          tmpBlocks.push(tmpBlock)
         }
-        tmpPos = new THREE.Vector3()
-        tmpPos.addVectors(block.position, new THREE.Vector3(0, -1, 0))
-        if (!tmpBlocks.some(b => b.equals(tmpPos))) {
-            tmpBlocks.push(tmpPos)
+      }
+      tmpPos = new Vector3()
+      tmpPos.addVectors(block.position, new Vector3(0, 0, -1))
+      tmpBlock = new BlockVO(tmpPos, 0, getActiveBlockType(), rotation.rotation);
+      if (!tmpBlocks.some(b => b.position.equals(tmpPos))) {
+        if (block.connectsTo(tmpBlock)) {
+          tmpBlocks.push(tmpBlock)
         }
-        tmpPos = new THREE.Vector3()
-        tmpPos.addVectors(block.position, new THREE.Vector3(0, 0, -1))
-        if (!tmpBlocks.some(b => b.equals(tmpPos))) {
-            tmpBlocks.push(tmpPos)
-        }
+      }
     })
     if (tmpBlocks.length === 0) {
-        tmpBlocks.push(new THREE.Vector3())
+      if (blocks.length === 0) {
+        tmpBlocks.push(new BlockVO(new Vector3(), 0, getActiveBlockType(), rotation.rotation));
+      } else {
+        return new Array<BlockVO>();
+      }
     }
     let key = blocks.length
-    return tmpBlocks.map((position) => {return new BlockVO(position, key++, getActiveBlockType(), rotation.rotation)});
+    return tmpBlocks.map((block) => {block.key = key++; return block});
   }
 
   function setHover(position: THREE.Vector3, hovering: number, actual: boolean) {
@@ -193,7 +214,7 @@ function App() {
     if (actual) {
       setBlocks(blocks.map((block) => {
         if (block.position.equals(position)) {
-          block.removable = DeleteChecker.checkIfBlockIsDeletable(block.position, blocks);
+          block.removable = DeleteChecker.checkIfBlockIsDeletable(block, blocks);
         }
         return block;
       }))
