@@ -44,6 +44,14 @@ class BlockTypeVO {
         concat(BlockTypeVO.defaultFullFace.map(vector3 => vector3.clone().applyEuler(new Euler(0, 0, Math.PI*-0.5))))
         )
     ]
+
+    public static getBlockTypeByXmlName(xmlName: string): BlockTypeVO {
+      const maybeBlockTypes = BlockTypeVO.allBlockTypes.filter(blockType => blockType.xmlName === xmlName);
+      if (maybeBlockTypes.length > 0) {
+        return maybeBlockTypes[0];
+      }
+      return BlockTypeVO.allBlockTypes[0];
+    }
 }
 
 export default BlockTypeVO;
