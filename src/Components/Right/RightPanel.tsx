@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import { useRef, useState, ChangeEvent } from 'react'
 import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
 import { OrthographicCamera } from '@react-three/drei'
+import Tooltip from '@mui/material/Tooltip';
 import OrientationCube from './OrientationCube'
 import CameraHandler from './../CameraHandler'
 import SliceManager from './../SliceManager'
@@ -20,6 +21,9 @@ function RightPanel(props: {
 
   return (
     <div className="RightPanel">
+      <Tooltip title="Use W,S,A,D,Q,E to rotate blocks similar to Home,End,Delete,PgDwn,Insert,PgUp in game">
+        <p className="Help">Keybindings</p>
+      </Tooltip>
       <div className="OrientationCube">
         <Canvas orthographic camera={{ zoom: 50, position: props.cameraPosition }} onContextMenu={(e) => e.preventDefault()}>
           <CameraHandler cameraPosition={props.cameraPosition} />

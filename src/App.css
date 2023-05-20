@@ -75,3 +75,7 @@
 .SelectedSearchResult {
   background-color: yellow;
 }
+
+.Help {
+  font-size: 10px;
+}

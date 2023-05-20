@@ -15,59 +15,13 @@ function BuildView(props: {
     sliceLimitsMin: THREE.Vector3,
     sliceLimitsMax: THREE.Vector3,
     limitDirections: THREE.Vector3,
-    rotateX: (up: boolean) => void,
-    rotateY: (up: boolean) => void,
-    rotateZ: (up: boolean) => void,
-    resetPossibleBlocks: () => void,
      }) {
   const cameraPosition = props.cameraPosition.clone();
   cameraPosition.multiplyScalar(100);
 
-  function onKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.code === "KeyS") {
-      props.resetPossibleBlocks();
-    }
-    if (event.code === "KeyW") {
-      props.resetPossibleBlocks();
-    }
-    if (event.code === "KeyA") {
-      props.resetPossibleBlocks();
-    }
-    if (event.code === "KeyD") {
-      props.resetPossibleBlocks();
-    }
-    if (event.code === "KeyQ") {
-      props.resetPossibleBlocks();
-    }
-    if (event.code === "KeyE") {
-      props.resetPossibleBlocks();
-    }
-  }
-
-  function onKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.code === "KeyS") {
-      props.rotateX(true);
-    }
-    if (event.code === "KeyW") {
-      props.rotateX(false);
-    }
-    if (event.code === "KeyA") {
-      props.rotateY(false);
-    }
-    if (event.code === "KeyD") {
-      props.rotateY(true);
-    }
-    if (event.code === "KeyQ") {
-      props.rotateZ(true);
-    }
-    if (event.code === "KeyE") {
-      props.rotateZ(false);
-    }
-  }
-
   return (
     <div className="BuildView" >
-        <Canvas orthographic camera={{ zoom: 50, position: cameraPosition }} onContextMenu={(e) => {e.preventDefault()}} tabIndex={0} onKeyDown={onKeyDown} onKeyUp={onKeyUp}>
+        <Canvas orthographic camera={{ zoom: 50, position: cameraPosition }} onContextMenu={(e) => {e.preventDefault()}}>
             <CameraHandler cameraPosition={cameraPosition} />
             <ambientLight />
             <directionalLight position={[1, 2, 0]} />

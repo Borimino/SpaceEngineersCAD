@@ -30,6 +30,46 @@ function App() {
   function resetPossibleBlocks() {
     setPossibleBlocks(new Array<BlockVO>());
   }
+  function onKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.code === "KeyS") {
+      resetPossibleBlocks();
+    }
+    if (event.code === "KeyW") {
+      resetPossibleBlocks();
+    }
+    if (event.code === "KeyA") {
+      resetPossibleBlocks();
+    }
+    if (event.code === "KeyD") {
+      resetPossibleBlocks();
+    }
+    if (event.code === "KeyQ") {
+      resetPossibleBlocks();
+    }
+    if (event.code === "KeyE") {
+      resetPossibleBlocks();
+    }
+  }
+  function onKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.code === "KeyS") {
+      rotateX(true);
+    }
+    if (event.code === "KeyW") {
+      rotateX(false);
+    }
+    if (event.code === "KeyA") {
+      rotateY(false);
+    }
+    if (event.code === "KeyD") {
+      rotateY(true);
+    }
+    if (event.code === "KeyQ") {
+      rotateZ(true);
+    }
+    if (event.code === "KeyE") {
+      rotateZ(false);
+    }
+  }
   // Rotation handling end
 
   // Block type handling start
@@ -245,7 +285,7 @@ function App() {
   // Slice limit handling end
 
   return (
-    <div className="App">
+    <div className="App" tabIndex={0} onKeyDown={onKeyDown} onKeyUp={onKeyUp}>
         <LeftPanel
           cameraPosition={cameraPosition}
           onClick={(position: THREE.Vector3) => setCameraPosition(position)}
@@ -263,10 +303,6 @@ function App() {
           sliceLimitsMin={sliceLimitsMin}
           sliceLimitsMax={sliceLimitsMax}
           limitDirections={limitDirections}
-          rotateX={rotateX}
-          rotateY={rotateY}
-          rotateZ={rotateZ}
-          resetPossibleBlocks={resetPossibleBlocks}
           />
         <RightPanel
           cameraPosition={cameraPosition}
