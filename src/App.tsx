@@ -62,6 +62,7 @@ function App() {
   }
   function resetPossibleBlocks() {
     setPossibleBlocks(new Array<BlockVO>());
+    setCurrentBlock(undefined);
   }
   function onKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.code === "KeyS") {
@@ -102,6 +103,7 @@ function App() {
     if (event.code === "KeyE") {
       rotateZ(false);
     }
+    setCurrentBlock(new BlockVO(new Vector3(0, 0, 0), -1, getActiveBlockType(), rotation.rotation))
   }
   // Rotation handling end
 
@@ -117,6 +119,7 @@ function App() {
       return blockType;
     }))
     setPossibleBlocks(recalculatePossibleBlocks(blocks));
+    setCurrentBlock(new BlockVO(new Vector3(0, 0, 0), -1, getActiveBlockType(), rotation.rotation))
   }
   function getActiveBlockType() {
     return blockTypes.reduce((acc, cur) => {
@@ -127,6 +130,7 @@ function App() {
     })
   }
   // Block type handling end
+  const [currentBlock, setCurrentBlock] = useState<BlockVO|undefined>(new BlockVO(new Vector3(0, 0, 0), -1, getActiveBlockType(), new Euler(0, 0, 0)));
 
   // Block handling start
   const [blocks, setBlocks] = useState<Array<BlockVO>>([])
@@ -161,7 +165,7 @@ function App() {
       let tmpPos = new Vector3()
       let tmpBlock = new BlockVO(tmpPos, 0, getActiveBlockType(), rotation.rotation);
       tmpPos.addVectors(block.position, new Vector3(1, 0, 0))
-      if (!tmpBlocks.some(b => b.position.equals(tmpPos))) {
+      if (!tmpBlocks.some(b => b.position.equals(tmpPos)) && !blocks.some(b => b.position.equals(tmpPos))) {
         if (block.connectsTo(tmpBlock)) {
           tmpBlocks.push(tmpBlock)
         }
@@ -169,7 +173,7 @@ function App() {
       tmpPos = new Vector3()
       tmpPos.addVectors(block.position, new Vector3(0, 1, 0))
       tmpBlock = new BlockVO(tmpPos, 0, getActiveBlockType(), rotation.rotation);
-      if (!tmpBlocks.some(b => b.position.equals(tmpPos))) {
+      if (!tmpBlocks.some(b => b.position.equals(tmpPos)) && !blocks.some(b => b.position.equals(tmpPos))) {
         if (block.connectsTo(tmpBlock)) {
           tmpBlocks.push(tmpBlock)
         }
@@ -177,7 +181,7 @@ function App() {
       tmpPos = new Vector3()
       tmpPos.addVectors(block.position, new Vector3(0, 0, 1))
       tmpBlock = new BlockVO(tmpPos, 0, getActiveBlockType(), rotation.rotation);
-      if (!tmpBlocks.some(b => b.position.equals(tmpPos))) {
+      if (!tmpBlocks.some(b => b.position.equals(tmpPos)) && !blocks.some(b => b.position.equals(tmpPos))) {
         if (block.connectsTo(tmpBlock)) {
           tmpBlocks.push(tmpBlock)
         }
@@ -185,7 +189,7 @@ function App() {
       tmpPos = new Vector3()
       tmpPos.addVectors(block.position, new Vector3(-1, 0, 0))
       tmpBlock = new BlockVO(tmpPos, 0, getActiveBlockType(), rotation.rotation);
-      if (!tmpBlocks.some(b => b.position.equals(tmpPos))) {
+      if (!tmpBlocks.some(b => b.position.equals(tmpPos)) && !blocks.some(b => b.position.equals(tmpPos))) {
         if (block.connectsTo(tmpBlock)) {
           tmpBlocks.push(tmpBlock)
         }
@@ -193,7 +197,7 @@ function App() {
       tmpPos = new Vector3()
       tmpPos.addVectors(block.position, new Vector3(0, -1, 0))
       tmpBlock = new BlockVO(tmpPos, 0, getActiveBlockType(), rotation.rotation);
-      if (!tmpBlocks.some(b => b.position.equals(tmpPos))) {
+      if (!tmpBlocks.some(b => b.position.equals(tmpPos)) && !blocks.some(b => b.position.equals(tmpPos))) {
         if (block.connectsTo(tmpBlock)) {
           tmpBlocks.push(tmpBlock)
         }
@@ -201,7 +205,7 @@ function App() {
       tmpPos = new Vector3()
       tmpPos.addVectors(block.position, new Vector3(0, 0, -1))
       tmpBlock = new BlockVO(tmpPos, 0, getActiveBlockType(), rotation.rotation);
-      if (!tmpBlocks.some(b => b.position.equals(tmpPos))) {
+      if (!tmpBlocks.some(b => b.position.equals(tmpPos)) && !blocks.some(b => b.position.equals(tmpPos))) {
         if (block.connectsTo(tmpBlock)) {
           tmpBlocks.push(tmpBlock)
         }
@@ -325,7 +329,9 @@ function App() {
           blocks={blocks}
           resetBlocks={resetBlocks}
           blockTypes={blockTypes}
-          selectBlockType={selectBlockType} />
+          selectBlockType={selectBlockType}
+          currentBlock={currentBlock}
+          />
         <BuildView
           cameraPosition={cameraPosition}
           blocks={blocks}

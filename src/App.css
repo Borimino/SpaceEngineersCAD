@@ -1,12 +1,15 @@
 .App {
   text-align: center;
   font-size: calc(10px + 2vmin);
+  display: flex;
+  width: 100vw;
+  height: 100vh;
 }
 
 .BuildView {
   background-color: #282c34;
   height: calc(100vh - 2px);
-  width: calc(80vw - 2px);
+  width: calc(100% - 12px);
   display: flex;
   float: left;
   border: 1px solid;
@@ -19,7 +22,7 @@
 .LeftPanel {
   background-color: #282c34;
   height: calc(100vh - 2px);
-  width: calc(10vw - 2px);
+  width: 200px;
   display: flex;
   float: left;
   border: 1px solid;
@@ -32,7 +35,7 @@
 .RightPanel {
   background-color: #282c34;
   height: calc(100vh - 2px);
-  width: calc(10vw - 2px);
+  width: 200px;
   display: flex;
   float: left;
   border: 1px solid;
@@ -53,6 +56,12 @@
   margin: 20px;
 }
 
+.SearchResultArea {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  margin-top: 10px;
+}
+
 .RightPanelMid {
   height: 100%;
   margin: 20px;
@@ -67,9 +76,8 @@
 }
 
 .SearchResult {
-  width: 50px;
+  width: 40px;
   aspect-ratio: 1;
-  margin: 10px;
 }
 
 .SelectedSearchResult {

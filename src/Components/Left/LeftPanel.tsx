@@ -12,6 +12,7 @@ import BlueprintLoader from './../../Services/BlueprintLoader'
 import BlockVO from './../../Data/BlockVO'
 import BlockTypeVO from './../../Data/BlockTypeVO'
 import SearchArea from './SearchArea'
+import CurrentBlock from './CurrentBlock'
 
 function LeftPanel(props: {
     cameraPosition: THREE.Vector3,
@@ -19,7 +20,9 @@ function LeftPanel(props: {
     blocks: Array<BlockVO>,
     resetBlocks: (blocks: Array<BlockVO>) => void
     blockTypes: Array<BlockTypeVO>,
-    selectBlockType: (key: number) => void }) {
+    selectBlockType: (key: number) => void,
+    currentBlock: BlockVO|undefined,
+    }) {
   const [gridName, setGridName] = useState<string>("");
   function handleGridName(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     setGridName(event.target.value)
@@ -49,6 +52,7 @@ function LeftPanel(props: {
 
   return (
     <div className="LeftPanel">
+      <CurrentBlock block={props.currentBlock} cameraPosition={props.cameraPosition} />
       <SearchArea blockTypes={props.blockTypes} selectBlockType={props.selectBlockType}/>
       <div className="SaveLoadMenu">
         <TextField id="gridName" label="Grid name" value={gridName} onChange={(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleGridName(e)}/>

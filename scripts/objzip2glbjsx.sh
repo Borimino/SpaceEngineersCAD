@@ -1,6 +1,6 @@
 name=$1
-input=$2
-output=$3
+input="/home/markus/Downloads/${name}_objFiles.zip"
+output="src/Resources/${name}.glb"
 
 unzip $input -d /tmp/$name/
 

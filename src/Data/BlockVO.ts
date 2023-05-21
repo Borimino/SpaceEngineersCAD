@@ -1,4 +1,3 @@
-import * as THREE from 'three'
 import { Vector3, Euler } from 'three'
 import BlockTypeVO from './BlockTypeVO'
 
@@ -9,13 +8,28 @@ class BlockVO {
     actuallyHovering: boolean = false;
     removable: boolean = true;
     blockType: BlockTypeVO;
-    rotation: Euler = new THREE.Euler();
+    rotation: Euler = new Euler();
 
     public constructor(position: Vector3, key: number, blockType: BlockTypeVO, rotation: Euler = new Euler()) {
         this.position = position;
         this.key = key;
         this.blockType = blockType;
         this.rotation = rotation;
+    }
+
+    public setRotation(rotation: Euler): BlockVO {
+      this.rotation = rotation;
+      return this;
+    }
+
+    public setBlockType(blockType: BlockTypeVO): BlockVO {
+      this.blockType = blockType;
+      return this;
+    }
+
+    public setPosition(position: Vector3): BlockVO {
+      this.position = position;
+      return this;
     }
 
     public connectsTo(other: BlockVO): boolean {
