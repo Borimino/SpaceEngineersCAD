@@ -24,6 +24,14 @@ import LargeBlockArmorInvCorner2Base from './../Resources/LargeBlockArmorInvCorn
 import LargeBlockArmorInvCorner2Tip from './../Resources/LargeBlockArmorInvCorner2Tip'
 import LargeBlockArmorHalfSlopeCornerInverted from './../Resources/LargeBlockArmorHalfSlopeCornerInverted'
 import LargeBlockArmorHalfSlopeInverted from './../Resources/LargeBlockArmorHalfSlopeInverted'
+import LargeBlockArmorSlopedCornerTip from './../Resources/LargeBlockArmorSlopedCornerTip'
+import LargeBlockArmorRaisedSlopedCorner from './../Resources/LargeBlockArmorRaisedSlopedCorner'
+import LargeBlockArmorSquareSlopedCornerTip from './../Resources/LargeBlockArmorSquareSlopedCornerTip'
+import LargeBlockArmorSquareSlopedCornerBase from './../Resources/LargeBlockArmorSquareSlopedCornerBase'
+import LargeBlockArmorSquareSlopedCornerTipInv from './../Resources/LargeBlockArmorSquareSlopedCornerTipInv'
+import LargeBlockArmorSlopedCornerBase from './../Resources/LargeBlockArmorSlopedCornerBase'
+import LargeBlockArmorSlopedCorner from './../Resources/LargeBlockArmorSlopedCorner'
+import LargeBlockArmorHalfSlopedCornerBase from './../Resources/LargeBlockArmorHalfSlopedCornerBase'
 
 class BlockTypeVO {
     key: number;
@@ -133,8 +141,8 @@ class BlockTypeVO {
     public static allBlockTypes: Array<BlockTypeVO> = [
       new BlockTypeVO(0, 'Light Armor Block', 'LargeBlockArmorBlock', LargeBlockArmorBlock,
         BlockTypeVO.defaultFullFace. // X Positive
-        concat(BlockTypeVO.defaultFullFace.map(vector3 => vector3.clone().applyEuler(new Euler(0, Math.PI*0.5, 0)))).  // Z Positive
-        concat(BlockTypeVO.defaultFullFace.map(vector3 => vector3.clone().applyEuler(new Euler(0, Math.PI*-0.5, 0)))). // Z Negative
+        concat(BlockTypeVO.defaultFullFace.map(vector3 => vector3.clone().applyEuler(new Euler(0, Math.PI*-0.5, 0)))).  // Z Positive
+        concat(BlockTypeVO.defaultFullFace.map(vector3 => vector3.clone().applyEuler(new Euler(0, Math.PI*0.5, 0)))). // Z Negative
         concat(BlockTypeVO.defaultFullFace.map(vector3 => vector3.clone().applyEuler(new Euler(0, Math.PI*1, 0)))). // X Negative
         concat(BlockTypeVO.defaultFullFace.map(vector3 => vector3.clone().applyEuler(new Euler(0, 0, Math.PI*0.5)))). // Y Positive
         concat(BlockTypeVO.defaultFullFace.map(vector3 => vector3.clone().applyEuler(new Euler(0, 0, Math.PI*-0.5)))) // Y Negative
@@ -313,6 +321,91 @@ class BlockTypeVO {
         new Vector3(1, -0.1, 0.5), new Vector3(1, -0.1, -0.5), new Vector3(1, -0.5, 0.1), new Vector3(1, -0.5, -0.1),
         new Vector3(0.9, 1, 0.5), new Vector3(0.9, 1, -0.5), new Vector3(0.5, 1, 0.9), new Vector3(0.5, 1, -0.9),
         new Vector3(0.1, 1, 0.5), new Vector3(0.1, 1, -0.5), new Vector3(0.5, 1, 0.1), new Vector3(0.5, 1, -0.1),
+        ])
+        ),
+      new BlockTypeVO(22, 'Sloped Corner Light Armor Tip', 'LargeBlockArmorSlopedCornerTip', LargeBlockArmorSlopedCornerTip,
+        BlockTypeVO.cornerY(-1, 1, -1).
+        concat([
+        new Vector3(-1, -0.9, 0.5), new Vector3(-1, -0.9, -0.5), new Vector3(-1, -0.5, 0.9),
+        new Vector3(-1, -0.1, 0.5), new Vector3(-1, -0.5, 0.1), new Vector3(-1, -0.5, -0.1),
+        new Vector3(-0.9, -0.5, 1), new Vector3(-0.5, -0.9, 1), new Vector3(0.5, -0.9, 1),
+        new Vector3(-0.1, -0.5, 1), new Vector3(0.1, -0.5, 1), new Vector3(-0.5, -0.1, 1),
+        ])
+        ),
+      new BlockTypeVO(23, 'Light Armor Raised Sloped Corner', 'LargeBlockArmorRaisedSlopedCorner', LargeBlockArmorRaisedSlopedCorner,
+        BlockTypeVO.defaultFullFace.map(vector3 => vector3.clone().applyEuler(new Euler(0, 0, Math.PI*-0.5))). // Y Negative
+        concat(BlockTypeVO.cornerX(-1, 1, 1)).
+        concat(BlockTypeVO.cornerZ(-1, 1, 1)).
+        concat([
+        new Vector3(1, -0.9, 0.5), new Vector3(1, -0.9, -0.5), new Vector3(1, -0.5, 0.9), new Vector3(1, -0.5, -0.9),
+        new Vector3(1, -0.1, 0.5), new Vector3(1, -0.1, -0.5), new Vector3(1, -0.5, 0.1), new Vector3(1, -0.5, -0.1),
+        new Vector3(0.9, -0.5, 1), new Vector3(-0.9, -0.5, 1), new Vector3(0.5, -0.9, 1), new Vector3(-0.5, -0.9, 1),
+        new Vector3(0.1, -0.5, 1), new Vector3(-0.1, -0.5, 1), new Vector3(0.5, -0.1, 1), new Vector3(-0.5, -0.1, 1),
+        ])
+        ),
+      new BlockTypeVO(24, 'Light Armor Square Sloped Corner Tip', 'LargeBlockArmorSquareSlopedCornerTip', LargeBlockArmorSquareSlopedCornerTip,
+        BlockTypeVO.defaultFullFace.map(vector3 => vector3.clone().applyEuler(new Euler(0, 0, Math.PI*-0.5))). // Y Negative
+        concat([
+        new Vector3(-1, -0.9, 0.5), new Vector3(-1, -0.9, -0.5), new Vector3(-1, -0.5, -0.9),
+        new Vector3(-1, -0.1, -0.5), new Vector3(-1, -0.5, 0.1), new Vector3(-1, -0.5, -0.1),
+        new Vector3(-0.9, -0.5, -1), new Vector3(0.5, -0.9, -1), new Vector3(-0.5, -0.9, -1),
+        new Vector3(0.1, -0.5, -1), new Vector3(-0.1, -0.5, -1), new Vector3(-0.5, -0.1, -1),
+        ])
+        ),
+      new BlockTypeVO(25, 'Light Armor Square Sloped Corner Base', 'LargeBlockArmorSquareSlopedCornerBase', LargeBlockArmorSquareSlopedCornerBase,
+        BlockTypeVO.defaultFullFace.map(vector3 => vector3.clone().applyEuler(new Euler(0, 0, Math.PI*-0.5))). // Y Negative
+        concat(BlockTypeVO.cornerX(-1, 1, 1)).
+        concat(BlockTypeVO.cornerZ(-1, 1, 1)).
+        concat([
+        new Vector3(1, -0.9, 0.5), new Vector3(1, -0.9, -0.5), new Vector3(1, -0.5, 0.9), new Vector3(1, -0.5, -0.9),
+        new Vector3(1, -0.1, 0.5), new Vector3(1, -0.1, -0.5), new Vector3(1, -0.5, 0.1), new Vector3(1, -0.5, -0.1),
+        new Vector3(0.9, -0.5, 1), new Vector3(-0.9, -0.5, 1), new Vector3(0.5, -0.9, 1), new Vector3(-0.5, -0.9, 1),
+        new Vector3(0.1, -0.5, 1), new Vector3(-0.1, -0.5, 1), new Vector3(0.5, -0.1, 1), new Vector3(-0.5, -0.1, 1),
+        ])
+        ),
+      new BlockTypeVO(26, 'Light Armor Square Sloped Corner Tip Inv', 'LargeBlockArmorSquareSlopedCornerTipInv', LargeBlockArmorSquareSlopedCornerTipInv,
+        BlockTypeVO.defaultFullFace.map(vector3 => vector3.clone().applyEuler(new Euler(0, 0, Math.PI*-0.5))). // Y Negative
+        concat([
+        new Vector3(-1, -0.9, 0.5), new Vector3(-1, -0.9, -0.5), new Vector3(-1, -0.5, 0.9), new Vector3(-1, -0.5, -0.9),
+        new Vector3(-1, -0.1, 0.5), new Vector3(-1, -0.1, -0.5), new Vector3(-1, -0.5, 0.1), new Vector3(-1, -0.5, -0.1),
+        new Vector3(0.9, -0.5, -1), new Vector3(-0.9, -0.5, -1), new Vector3(0.5, -0.9, -1), new Vector3(-0.5, -0.9, -1),
+        new Vector3(0.1, -0.5, -1), new Vector3(-0.1, -0.5, -1), new Vector3(0.5, -0.1, -1), new Vector3(-0.5, -0.1, -1),
+        new Vector3(1, -0.9, 0.5), new Vector3(1, -0.9, -0.5), new Vector3(1, -0.5, -0.9),
+        new Vector3(1, -0.1, -0.5), new Vector3(1, -0.5, 0.1), new Vector3(1, -0.5, -0.1),
+        new Vector3(-0.9, -0.5, 1), new Vector3(0.5, -0.9, 1), new Vector3(-0.5, -0.9, 1),
+        new Vector3(0.1, -0.5, 1), new Vector3(-0.1, -0.5, 1), new Vector3(-0.5, -0.1, 1),
+        ])
+        ),
+      new BlockTypeVO(27, 'Light Armor Sloped Corner Base', 'LargeBlockArmorSlopedCornerBase', LargeBlockArmorSlopedCornerBase,
+        BlockTypeVO.defaultFullFace.map(vector3 => vector3.clone().applyEuler(new Euler(0, 0, Math.PI*-0.5))). // Y Negative
+        concat(BlockTypeVO.defaultFullFace). // X Positive
+        concat(BlockTypeVO.defaultFullFace.map(vector3 => vector3.clone().applyEuler(new Euler(0, Math.PI*0.5, 0)))). // Z Negative
+        concat(BlockTypeVO.cornerX(-1, 1, 1)).
+        concat(BlockTypeVO.cornerY(1, -1, 1)).
+        concat(BlockTypeVO.cornerZ(1, -1, 1))
+        ),
+      new BlockTypeVO(28, 'Light Armor Sloped Corner', 'LargeBlockArmorSlopedCorner', LargeBlockArmorSlopedCorner,
+        BlockTypeVO.defaultFullFace.map(vector3 => vector3.clone().applyEuler(new Euler(0, 0, Math.PI*-0.5))). // Y Negative
+        concat(BlockTypeVO.cornerX(-1, 1, 1)).
+        concat(BlockTypeVO.cornerZ(-1, 1, 1)).
+        concat([
+        new Vector3(1, -0.9, 0.5), new Vector3(1, -0.9, -0.5), new Vector3(1, -0.5, -0.9),
+        new Vector3(1, -0.1, -0.5), new Vector3(1, -0.5, 0.1), new Vector3(1, -0.5, -0.1),
+        new Vector3(-0.9, -0.5, 1), new Vector3(0.5, -0.9, 1), new Vector3(-0.5, -0.9, 1),
+        new Vector3(0.1, -0.5, 1), new Vector3(-0.1, -0.5, 1), new Vector3(-0.5, -0.1, 1),
+        ])
+        ),
+      new BlockTypeVO(29, 'Light Armor Half Sloped Corner Base', 'LargeBlockArmorHalfSlopedCornerBase', LargeBlockArmorHalfSlopedCornerBase,
+        BlockTypeVO.defaultFullFace.map(vector3 => vector3.clone().applyEuler(new Euler(0, 0, Math.PI*-0.5))). // Y Negative
+        concat([
+        new Vector3(-1, -0.9, 0.5), new Vector3(-1, -0.9, -0.5), new Vector3(-1, -0.5, 0.9), new Vector3(-1, -0.5, -0.9),
+        new Vector3(-1, -0.1, 0.5), new Vector3(-1, -0.1, -0.5), new Vector3(-1, -0.5, 0.1), new Vector3(-1, -0.5, -0.1),
+        new Vector3(0.9, -0.5, -1), new Vector3(-0.9, -0.5, -1), new Vector3(0.5, -0.9, -1), new Vector3(-0.5, -0.9, -1),
+        new Vector3(0.1, -0.5, -1), new Vector3(-0.1, -0.5, -1), new Vector3(0.5, -0.1, -1), new Vector3(-0.5, -0.1, -1),
+        new Vector3(1, -0.9, 0.5), new Vector3(1, -0.9, -0.5), new Vector3(1, -0.5, -0.9),
+        new Vector3(1, -0.1, -0.5), new Vector3(1, -0.5, 0.1), new Vector3(1, -0.5, -0.1),
+        new Vector3(-0.9, -0.5, 1), new Vector3(0.5, -0.9, 1), new Vector3(-0.5, -0.9, 1),
+        new Vector3(0.1, -0.5, 1), new Vector3(-0.1, -0.5, 1), new Vector3(-0.5, -0.1, 1),
         ])
         ),
     ]
