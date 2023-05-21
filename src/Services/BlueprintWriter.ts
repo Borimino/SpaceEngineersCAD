@@ -15,7 +15,7 @@ class BlueprintWriter {
         replace('(?FORWARD?)', BlueprintWriter.getForward(block.rotation)).
         replace('(?UP?)', BlueprintWriter.getUp(block.rotation));
     })
-    const bpXml = bpXmlTemplate.replace('(?GRID_NAME?)', gridName).replace('(?BLOCKS?)', blockXmls.join(""))
+    const bpXml = bpXmlTemplate.replaceAll('(?GRID_NAME?)', gridName).replace('(?BLOCKS?)', blockXmls.join(""))
     console.log(bpXml);
 
     const zip = new JSZip();
