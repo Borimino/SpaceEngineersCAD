@@ -35,70 +35,106 @@ class BlueprintWriter {
     link.click();
   }
 
-  private static getForward(rotation: Euler): string {
-    if (rotation.x < 0.01 && rotation.y < 0.01) {
-      return "Forward";
+  private static isAngle(angle: number, near: number): boolean {
+    return Math.abs(angle - Math.PI*near) < 0.01;
+  }
+
+  public static getForward(rotation: Euler): string {
+    if (BlueprintWriter.isAngle(rotation.x, 0)) {
+      if (BlueprintWriter.isAngle(rotation.y, 0)) {
+        return "Forward";
+      } else if (BlueprintWriter.isAngle(rotation.y, -0.5)) {
+        return "Left";
+      } else if (BlueprintWriter.isAngle(rotation.y, 0.5)) {
+        return "Right";
+      } else if (BlueprintWriter.isAngle(rotation.y, 1)) {
+        return "Backward";
+      }
     }
-    if (Math.abs(rotation.x-Math.PI*1) < 0.01 && rotation.y < 0.01) {
-      return "Backward";
+    if (BlueprintWriter.isAngle(rotation.x, 1) || BlueprintWriter.isAngle(rotation.x, -1)) {
+      if (BlueprintWriter.isAngle(rotation.y, 0)) {
+        return "Backward";
+      } else if (BlueprintWriter.isAngle(rotation.y, -0.5)) {
+        return "Right";
+      } else if (BlueprintWriter.isAngle(rotation.y, 0.5)) {
+        return "Left";
+      } else if (BlueprintWriter.isAngle(rotation.y, 1) || BlueprintWriter.isAngle(rotation.y, -1)) {
+        return "Forward";
+      }
     }
-    if (Math.abs(rotation.x-Math.PI*0.5) < 0.01) {
-      if (rotation.z < 0.01) {
+    if (BlueprintWriter.isAngle(rotation.x, 0.5)) {
+      if (BlueprintWriter.isAngle(rotation.z, 0)) {
         return "Up";
       }
-      if (Math.abs(rotation.z-Math.PI*1) < 0.01) {
+      if (BlueprintWriter.isAngle(rotation.z, 1) || BlueprintWriter.isAngle(rotation.z, -1)) {
         return "Down";
       }
-      if (Math.abs(rotation.z-Math.PI*-0.5) < 0.01) {
+      if (BlueprintWriter.isAngle(rotation.z, -0.5)) {
         return "Right";
       }
-      if (Math.abs(rotation.z-Math.PI*0.5) < 0.01) {
+      if (BlueprintWriter.isAngle(rotation.z, 0.5)) {
         return "Left";
       }
     }
-    if (Math.abs(rotation.x-Math.PI*-0.5) < 0.01) {
-      if (rotation.z < 0.01) {
+    if (BlueprintWriter.isAngle(rotation.x, -0.5)) {
+      if (BlueprintWriter.isAngle(rotation.z, 0)) {
         return "Down";
       }
-      if (Math.abs(rotation.z-Math.PI*1) < 0.01) {
+      if (BlueprintWriter.isAngle(rotation.z, 1) || BlueprintWriter.isAngle(rotation.z, -1)) {
         return "Up";
       }
-      if (Math.abs(rotation.z-Math.PI*-0.5) < 0.01) {
+      if (BlueprintWriter.isAngle(rotation.z, -0.5)) {
         return "Left";
       }
-      if (Math.abs(rotation.z-Math.PI*0.5) < 0.01) {
+      if (BlueprintWriter.isAngle(rotation.z, 0.5)) {
         return "Right";
       }
     }
     return "null"
   }
 
-  private static getUp(rotation: Euler): string {
-    if (rotation.x < 0.01 && rotation.z < 0.01) {
-      return "Up";
-    }
-    if (Math.abs(rotation.x-Math.PI*1) < 0.01 && rotation.z < 0.01) {
-      return "Down";
-    }
-    if (Math.abs(rotation.x-Math.PI*0.5) < 0.01) {
-      if (rotation.y < 0.01) {
-        return "Back";
-      }
-      if (Math.abs(rotation.y-Math.PI*0.5) < 0.01) {
+  public static getUp(rotation: Euler): string {
+    if (BlueprintWriter.isAngle(rotation.x, 0)) {
+      if (BlueprintWriter.isAngle(rotation.z, 0)) {
+        return "Up";
+      } else if (BlueprintWriter.isAngle(rotation.z, 1) || BlueprintWriter.isAngle(rotation.z, -1)) {
+        return "Down";
+      } else if (BlueprintWriter.isAngle(rotation.z, 0.5)) {
+        return "Left";
+      } else if (BlueprintWriter.isAngle(rotation.z, -0.5)) {
         return "Right";
       }
-      if (Math.abs(rotation.y-Math.PI*-0.5) < 0.01) {
+    }
+    if (BlueprintWriter.isAngle(rotation.x, 1) || BlueprintWriter.isAngle(rotation.x, -1)) {
+      if (BlueprintWriter.isAngle(rotation.z, 0)) {
+        return "Down";
+      } else if (BlueprintWriter.isAngle(rotation.z, 1) || BlueprintWriter.isAngle(rotation.z, -1)) {
+        return "Up";
+      } else if (BlueprintWriter.isAngle(rotation.z, 0.5)) {
+        return "Right";
+      } else if (BlueprintWriter.isAngle(rotation.z, -0.5)) {
         return "Left";
       }
     }
-    if (Math.abs(rotation.x-Math.PI*-0.5) < 0.01) {
-      if (rotation.y < 0.01) {
-        return "Front";
+    if (BlueprintWriter.isAngle(rotation.x, 0.5)) {
+      if (BlueprintWriter.isAngle(rotation.y, 0)) {
+        return "Back";
       }
-      if (Math.abs(rotation.y-Math.PI*0.5) < 0.01) {
+      if (BlueprintWriter.isAngle(rotation.y, 0.5)) {
+        return "Left";
+      }
+      if (BlueprintWriter.isAngle(rotation.y, -0.5)) {
         return "Right";
       }
-      if (Math.abs(rotation.y-Math.PI*-0.5) < 0.01) {
+    }
+    if (BlueprintWriter.isAngle(rotation.x, -0.5)) {
+      if (BlueprintWriter.isAngle(rotation.y, 0)) {
+        return "Front";
+      }
+      if (BlueprintWriter.isAngle(rotation.y, 0.5)) {
+        return "Right";
+      }
+      if (BlueprintWriter.isAngle(rotation.y, -0.5)) {
         return "Left";
       }
     }

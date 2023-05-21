@@ -9,25 +9,55 @@ import RightPanel from './Components/Right/RightPanel'
 import BlockVO from './Data/BlockVO'
 import BlockTypeVO from './Data/BlockTypeVO'
 import DeleteChecker from './Services/DeleteChecker'
+import BlueprintWriter from './Services/BlueprintWriter'
 
 function App() {
   const [cameraPosition, setCameraPosition] = useState<THREE.Vector3>(new THREE.Vector3(1, 1, 1))
 
   // Rotation handling start
   const [rotation, setRotation] = useState<THREE.Object3D>(new THREE.Object3D());
+  function getRotationXAxis(): Vector3 {
+    if (cameraPosition.x === 1) {
+      if (cameraPosition.z === 1) {
+        return new Vector3(1, 0, 0);
+      } else {
+        return new Vector3(0, 0, -1);
+      }
+    } else {
+      if (cameraPosition.z === 1) {
+        return new Vector3(0, 0, 1);
+      } else {
+        return new Vector3(-1, 0, 0);
+      }
+    }
+    return new Vector3(1, 0, 0);
+  }
+  function getRotationZAxis(): Vector3 {
+    if (cameraPosition.x === 1) {
+      if (cameraPosition.z === 1) {
+        return new Vector3(0, 0, 1);
+      } else {
+        return new Vector3(1, 0, 0);
+      }
+    } else {
+      if (cameraPosition.z === 1) {
+        return new Vector3(-1, 0, );
+      } else {
+        return new Vector3(0, 0, -1);
+      }
+    }
+    return new Vector3(0, 0, 1);
+  }
   function rotateX(up: boolean) {
-    setRotation(rotation.rotateX(Math.PI*(up ? 0.5 : -0.5)));
-    console.log(rotation.rotation);
+    rotation.rotateOnWorldAxis(getRotationXAxis(), Math.PI*(up ? 0.5 : -0.5));
     setPossibleBlocks(recalculatePossibleBlocks(blocks));
   }
   function rotateY(up: boolean) {
-    setRotation(rotation.rotateY(Math.PI*(up ? 0.5 : -0.5)));
-    console.log(rotation.rotation);
+    rotation.rotateOnWorldAxis(new Vector3(0, 1, 0), Math.PI*(up ? 0.5 : -0.5));
     setPossibleBlocks(recalculatePossibleBlocks(blocks));
   }
   function rotateZ(up: boolean) {
-    setRotation(rotation.rotateZ(Math.PI*(up ? 0.5 : -0.5)));
-    console.log(rotation.rotation);
+    rotation.rotateOnWorldAxis(getRotationZAxis(), Math.PI*(up ? 0.5 : -0.5));
     setPossibleBlocks(recalculatePossibleBlocks(blocks));
   }
   function resetPossibleBlocks() {
